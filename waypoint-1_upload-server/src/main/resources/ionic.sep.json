@@ -1,0 +1,13 @@
+{
+  "activeDeviceId": "BKAl.I.eeae523a-2d0b-4003-5c78-e12ba19a00ac",
+  "profiles": [
+    {
+      "name": "",
+      "creationTimestamp": 1604691739,
+      "deviceId": "BKAl.I.eeae523a-2d0b-4003-5c78-e12ba19a00ac",
+      "server": "https://api.ionic.com",
+      "aesCdIdcKey": "09bbd066522b4e7646b840f5609644d9b73fa1105caa41d5b5eb43dddf509412",
+      "aesCdEiKey": "70c2855b77069626cb0f250185eb2ff59c77bd02e02361c2eb5594af3d5f14ee"
+    }
+  ]
+}
