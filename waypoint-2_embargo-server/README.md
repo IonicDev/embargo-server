@@ -20,9 +20,14 @@ This is will pull in all the required packages for the webapp.
 - to start Tomcat `mvn cargo:start`
 - to stop Tomcat `mvn cargo:stop`
 
-## Admin access
-- [access Tomcat Web Application Manager](https://localhost:8443/manager/html)
+## Application Access
+The WebApp needs to be running.
+
+- [Access Embargo Server](https://localhost:8443/ionic)
+- [Access Tomcat Web Application Manager](https://localhost:8443/manager/html)
   - user: `admin`, password `purple`
 
 ## Links
-- [log4j sample (inspiration for this hack)](https://ionic.com/protecting-log-data-using-log4j-and-machina-tools-sdk/)
+- Inspiration: [log4j sample](https://ionic.com/protecting-log-data-using-log4j-and-machina-tools-sdk/)
+- [Apache Tomcat](http://tomcat.apache.org/)
+- [Codehaus Cargo](https://codehaus-cargo.github.io/cargo/Maven2+Archetypes.html)
