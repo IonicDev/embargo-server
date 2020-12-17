@@ -39,20 +39,20 @@
     </servlet>
 
     <servlet>
-        <servlet-name>submit-embargo-content</servlet-name>
-        <servlet-class>com.ionic.embargo_server.servlet.ContentServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>secure-enrollment-profile</servlet-name>
-        <servlet-class>com.ionic.embargo_server.servlet.ProfileServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>view-all-embargo-content</servlet-name>
         <servlet-class>com.ionic.embargo_server.servlet.ViewAllContentServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>submit-embargo-content</servlet-name>
+        <servlet-class>com.ionic.embargo_server.servlet.ContentServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>run-tests</servlet-name>
         <servlet-class>com.ionic.embargo_server.servlet.TestServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>secure-enrollment-profile</servlet-name>
+        <servlet-class>com.ionic.embargo_server.servlet.ProfileServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
