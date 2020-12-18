@@ -6,14 +6,10 @@ import com.ionic.sdk.agent.Agent;
 import com.ionic.sdk.agent.key.KeyAttribute;
 import com.ionic.sdk.agent.key.KeyAttributesMap;
 import com.ionic.sdk.agent.request.createkey.CreateKeysResponse;
-import com.ionic.sdk.core.codec.Transcoder;
 import com.ionic.sdk.core.date.DateTime;
-import com.ionic.sdk.core.io.Stream;
-import com.ionic.sdk.core.res.Resource;
 import com.ionic.sdk.device.DeviceUtils;
 import com.ionic.sdk.device.profile.persistor.DeviceProfilePersistorPlainText;
 import com.ionic.sdk.error.IonicException;
-import com.ionic.sdk.error.SdkError;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -85,7 +81,7 @@ public class ContentServlet extends HttpServlet {
         // Back to bytes.
         html = htmlText.getBytes(StandardCharsets.UTF_8);
 
-        // Populate the HTTP response.
+        // Populate the HTML response.
         response.setStatus(HttpURLConnection.HTTP_OK);
         response.setContentType("text/html; charset=utf-8");
         response.getOutputStream().write(html);
@@ -163,10 +159,10 @@ public class ContentServlet extends HttpServlet {
         propertiesEmbargoData.store(os, "embargo-data");
         DeviceUtils.write(fileEmbargoMetadata, os.toByteArray());
 
-        // upload content to persist location
+        // Upload content to persistent location.
         final File fileInfo = new File(Webapp.getFolderEmbargoContent(), filename);
         FileUtils.writeByteArrayToFile(fileInfo, content, false);
-        logger.info("File: " + filename + " uploaded"); 
+        logger.info("File: " + filename + " uploaded");
 
         // populate alert
         final String uriContent = Webapp.getEmbargoURI(filename);

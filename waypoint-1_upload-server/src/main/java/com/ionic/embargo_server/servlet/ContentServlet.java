@@ -30,6 +30,11 @@ import java.util.logging.Logger;
  */
 public class ContentServlet extends HttpServlet {
 
+    /**
+     * Class scoped logger.
+     */
+    private final Logger logger = Logger.getLogger(getClass().getName());
+
     @Override
     public final void init(final ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
@@ -44,16 +49,17 @@ public class ContentServlet extends HttpServlet {
     protected final void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
 
-        // response template html
+        // Response HTML template.
         String templateFileName = "html/SubmitEmbargoContent.html";
         ClassLoader classLoader = getClass().getClassLoader();
         File templateFile = new File(classLoader.getResource(templateFileName).getFile());
 
         byte[] html = Files.readAllBytes(templateFile.toPath());
 
-        // show alert (if present)
+        // Show alert (if present)
         final String alert = System.getProperty(getClass().getName());
         if (alert != null) {
+            logger.info("processing alert");
             System.getProperties().remove(getClass().getName());
 
             String htmlText = new String(html)
@@ -62,7 +68,7 @@ public class ContentServlet extends HttpServlet {
             html = htmlText.getBytes(StandardCharsets.UTF_8);
         }
 
-        // populate response
+        // Populate the HTML response.
         response.setStatus(HttpURLConnection.HTTP_OK);
         response.setContentType("text/html; charset=utf-8");
         response.getOutputStream().write(html);
@@ -92,6 +98,7 @@ public class ContentServlet extends HttpServlet {
             // populate alert for doGet()
             System.setProperty(getClass().getName(), String.format(
                     "Content not uploaded at %s [%s].", new Date().toString(), e.getMessage()));
+            logger.severe(">>>> parameter or upload Exception: " + e.getMessage());
         }
 
         // instruct user agent to discard HTML form POST state
@@ -108,9 +115,10 @@ public class ContentServlet extends HttpServlet {
             throw new IOException("Missing value: content");
         }
 
-        // upload content to persist location
+        // Upload content to persistent location.
         final File fileInfo = new File(Webapp.getFolderEmbargoContent(), filename);
         FileUtils.writeByteArrayToFile(fileInfo, content, false);
+        logger.info("File: " + filename + " uploaded");
 
         // populate alert
         System.setProperty(getClass().getName(), String.format(
