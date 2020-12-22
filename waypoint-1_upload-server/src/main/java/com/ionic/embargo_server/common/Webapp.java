@@ -1,3 +1,9 @@
+/**
+* (c) 2020-2021 Ionic Security Inc.  All rights reserved.
+* By using this code, I agree to the Privacy Policy (https://www.ionic.com/privacy-notice/),
+* and the License Agreement (https://dev.ionic.com/license).
+*/
+
 package com.ionic.embargo_server.common;
 
 import java.io.File;
