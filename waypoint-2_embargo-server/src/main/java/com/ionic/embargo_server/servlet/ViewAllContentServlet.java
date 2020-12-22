@@ -65,8 +65,8 @@ public class ViewAllContentServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Response HTML template.
-        final byte[] htmlTemplate = Stream.read(Resource.resolve("html/ViewAllEmbargoContent.html"));
-        final byte[] htmlContent = addContent(htmlTemplate);
+        final byte[] html = Stream.read(Resource.resolve("html/ViewAllEmbargoContent.html"));
+        final byte[] htmlContent = addContent(html);
 
         // Populate response.
         response.setStatus(HttpURLConnection.HTTP_OK);
