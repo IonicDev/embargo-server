@@ -1,3 +1,9 @@
+/**
+* (c) 2020-2021 Ionic Security Inc.  All rights reserved.
+* By using this code, I agree to the Privacy Policy (https://www.ionic.com/privacy-notice/),
+* and the License Agreement (https://dev.ionic.com/license).
+*/
+
 package com.ionic.embargo_server.servlet;
 
 import com.ionic.embargo_server.common.Webapp;
@@ -95,7 +101,7 @@ public class ContentServlet extends HttpServlet {
             }
             uploadContent(filename, content);
         } catch (Exception e) {
-            // populate alert for doGet()
+            // Populate alert for doGet().
             System.setProperty(getClass().getName(), String.format(
                     "Content not uploaded at %s [%s].", new Date().toString(), e.getMessage()));
             logger.severe(">>>> parameter or upload Exception: " + e.getMessage());
@@ -120,7 +126,7 @@ public class ContentServlet extends HttpServlet {
         FileUtils.writeByteArrayToFile(fileInfo, content, false);
         logger.info("File: " + filename + " uploaded");
 
-        // populate alert
+        // Populate alert.
         System.setProperty(getClass().getName(), String.format(
                 "%s content uploaded at %s.", filename, new Date().toString()));
     }

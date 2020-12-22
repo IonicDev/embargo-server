@@ -1,3 +1,9 @@
+/**
+* (c) 2020-2021 Ionic Security Inc.  All rights reserved.
+* By using this code, I agree to the Privacy Policy (https://www.ionic.com/privacy-notice/),
+* and the License Agreement (https://dev.ionic.com/license).
+*/
+
 package com.ionic.embargo_server.servlet;
 
 import com.ionic.embargo_server.common.Webapp;
@@ -57,10 +63,12 @@ public class ViewAllContentServlet extends HttpServlet {
     @Override
     protected final void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
-        // response template html
+
+        // Response HTML template.
         final byte[] htmlTemplate = Stream.read(Resource.resolve("html/ViewAllEmbargoContent.html"));
         final byte[] htmlContent = addContent(htmlTemplate);
-        // populate response
+
+        // Populate response.
         response.setStatus(HttpURLConnection.HTTP_OK);
         response.setContentType("text/html; charset=utf-8");
         response.getOutputStream().write(htmlContent);
@@ -69,16 +77,17 @@ public class ViewAllContentServlet extends HttpServlet {
     private byte[] addContent(final byte[] html) throws IOException {
         Logger logger = Logger.getLogger(getClass().getName());
         try {
-            // load template document into DOM
+            // Load HTML template document into DOM and insert table.
             final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             builderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             final DocumentBuilder builder = builderFactory.newDocumentBuilder();
             final Document document = builder.parse(new ByteArrayInputStream(html));
-            // find insert point
+
+            // Find insert point.
             final XPath xpath = XPathFactory.newInstance().newXPath();
             final Element elementContent = (Element) xpath.evaluate("//*[@id = 'content']", document, XPathConstants.NODE);
 
-            // insert table
+            // Insert table.
             final Element table = addChild(elementContent, "table", null);
             final Element thead = addChild(table, "thead", null);
             final Element trhead = addChild(thead, "tr", null);
@@ -89,7 +98,7 @@ public class ViewAllContentServlet extends HttpServlet {
             addChild(trhead, "th", "Is Embargoed");
             final Element tbody = addChild(table, "tbody", null);
 
-            // iterate through registered content; one table row for each
+            // Iterate through registered content, one table row for each.
             final File fileEmbargoMetadata = Webapp.getFileEmbargoMetadata();
             final Properties propertiesEmbargoData = new Properties();
             if (fileEmbargoMetadata.exists()) {
@@ -98,24 +107,30 @@ public class ViewAllContentServlet extends HttpServlet {
             final Date now = new Date();
             final TreeSet<String> resourceNames = new TreeSet<String>(propertiesEmbargoData.stringPropertyNames());
 
-            // iterate through the registered files in the embargo list
+            // Iterate through the registered files in the embargo list and verify content exists..
             for (String resourceName : resourceNames) {
                 final String resourceValue = propertiesEmbargoData.getProperty(resourceName);
                 final Matcher matcher = Pattern.compile("\\[(.+?)\\]\\[(.+?)\\]").matcher(resourceValue);
                 if (matcher.matches()) {
                     final Element tr = addChild(tbody, "tr", null);
                     final File fileResource = new File(Webapp.getFolderEmbargoContent(), new File(resourceName).getName());
+
+                    // If content (file) exists, display it.
                     if (fileResource.exists()) {
                         final Element td = addChild(tr, "td", null);
                         final Element a = addChild(td, "a", fileResource.getName());
                         a.setAttribute("href", resourceName);
                         addChild(tr, "td", Long.toString(fileResource.length()));
                         addChild(tr, "td", Webapp.toString(new Date(fileResource.lastModified())));
+
+                        // Display content upload time.
                         try {
                             addChild(tr, "td", Webapp.toString(Webapp.toDate(matcher.group(2))));
                         } catch (IonicException e) {
                             addChild(tr, "td", "?");
                         }
+
+                        // Display seconds the content until released from embargo.
                         try {
                             final Date embargoDate = Webapp.toDate(matcher.group(2));
                             long milliseconds = embargoDate.getTime() - now.getTime();
@@ -128,7 +143,7 @@ public class ViewAllContentServlet extends HttpServlet {
                 }
             }
 
-            // convert DOM back into byte stream
+            // Convert DOM back into byte stream.
             final DocumentType documentType = document.getDoctype();
             final Source source = new DOMSource(document);
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();

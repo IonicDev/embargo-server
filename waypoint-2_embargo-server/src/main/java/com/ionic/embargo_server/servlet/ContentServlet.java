@@ -1,3 +1,9 @@
+/**
+* (c) 2020-2021 Ionic Security Inc.  All rights reserved.
+* By using this code, I agree to the Privacy Policy (https://www.ionic.com/privacy-notice/),
+* and the License Agreement (https://dev.ionic.com/license).
+*/
+
 package com.ionic.embargo_server.servlet;
 
 import com.ionic.embargo_server.common.Webapp;
@@ -110,7 +116,7 @@ public class ContentServlet extends HttpServlet {
             }
             uploadContent(filename, content, embargoDate, request);
         } catch (Exception e) {
-            // populate alert for doGet()
+            // Populate alert for doGet().
             System.setProperty(getClass().getName(), String.format(
                     "Content not uploaded at %s [%s].", new Date().toString(), e.getMessage()));
             logger.severe(">>>> parameter or upload Exception: " + e.getMessage());
@@ -140,9 +146,7 @@ public class ContentServlet extends HttpServlet {
         final KeyAttributesMap cattrsEmbargo = new KeyAttributesMap(new KeyAttribute("ionic-embargo", embargoDate));
         final CreateKeysResponse createKeysResponse = agent.createKey(cattrsEmbargo);
         final CreateKeysResponse.Key createKey = createKeysResponse.getFirstKey();
-        System.setProperty(getClass().getName(), String.format(
-            "DeviceID=[%s].", agent.getActiveProfile().getDeviceId()));
-        logger.info("Key: " + createKey.getId());
+        logger.info("Created Key: " + createKey.getId() + " from Device ID: " + agent.getActiveProfile().getDeviceId());
 
         // Update webapp embargo data
         final File fileEmbargoMetadata = Webapp.getFileEmbargoMetadata();
@@ -164,7 +168,7 @@ public class ContentServlet extends HttpServlet {
         FileUtils.writeByteArrayToFile(fileInfo, content, false);
         logger.info("File: " + filename + " uploaded");
 
-        // populate alert
+        // Populate alert
         final String uriContent = Webapp.getEmbargoURI(filename);
         final String urlContent = request.getRequestURL().toString().replace(request.getRequestURI(), uriContent);
         final Date now = new Date();
